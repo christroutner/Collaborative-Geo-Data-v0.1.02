@@ -4,10 +4,10 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
 		
-    <title>View Details on this Location</title>
+    <title>Location Details</title>
 
-		<script src="./jquery.js"></script>
-    <script src="./jquery.csv-0.71.js"></script>
+		<script src="./js/jquery.js"></script>
+    <script src="./js/jquery.csv-0.71.js"></script>
     
 		<script>
 			
@@ -16,8 +16,6 @@
 
       // Wait until the DOM has loaded before querying the document
 			$(document).ready(function(){
-
-        var UniqueID;
         
         //Create a custom event for when the XML file is finished loading.
         var XMLevent = new CustomEvent('XMLLoaded', {
@@ -37,9 +35,9 @@
             return(str.substring(point+1,str.length));
         }
         
-        UniqueID = delineate2(text);
+        var UniqueID = delineate2(text);
         
-        //document.write("UniqueID is " +UniqueID);
+        console.log("UniqueID is " +UniqueID);
         
         // Retrieve the XML file for this marker.
         // Call the XMLevent after the file finishes loading.
@@ -65,14 +63,15 @@
                 
         // Create an event listener that executes after the XML file has finished loading.
 				document.addEventListener('XMLLoaded', function (e) {
-debugger;
-          var XMLStrings = ValidateXML();  //Validate the XML before writing it to the webpage.
-                          //This handles empty XML entities.
+
+          var XMLStrings = ValidateXML();   //Validate the XML before writing it to the webpage.
+                                            //This handles empty XML entities.
         
+          //This is not used in the page. It is used for debugging and possibly passing data to other functions.
           var contentstring = '<div id="LocationInfo">' +
             '<h1>' + XMLStrings.title + '</h1>' +
             '<br>' +
-            '<p> Summary: ' + XMLStrings.summery + '</p>' +
+            '<p> Summary: ' + XMLStrings.summary + '</p>' +
             '<br>' +
             '<p> Last Updated by: ' + XMLStrings.username + '</p>' +
             '<br>' +
@@ -84,29 +83,24 @@ debugger;
             '<br>' +
             '<p> Longitude: ' + XMLStrings.longitude + '</p>' +
             '<br>' +
-            '<p> Approach and Anchorage: ' + XMLStrings.approach + '</p>' +
-            '<br>' +
             '<p> Description: ' + XMLStrings.description + '</p>' +
             '<br>' +
-            '<p> NOAA Image: ' + XMLStrings.noaaimage + '</p>' +
-            '<br>' +
-            '<p> Image 1: ' + XMLStrings.image + '</p>' +
-            '<br>' +
             '<p><a href="http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com/ModifyLocation.htm?UniqueID='+UniqueID+'">Modify Location Information</a></p>'+
-            '</div>';
-          
+            '</div>';          
           //$(document).append(contentstring);
-          //document.write(contentstring);
           
-          $('#NOAAImage').html('<img src="'+XMLStrings.noaaimage+'">');
-          $('#Summary').html(XMLStrings.summery);
-          $('#Approach').html(XMLStrings.approach);
-          $('#Description').html(XMLStrings.approach);
+          //Update the DOM with data from the XML file.
+          $('#Summary').html(XMLStrings.summary);
+          $('#Description').html(XMLStrings.description);
 
 				}, false);
 
+        /* This function validates the XML. If an XML element does not exist, 
+        then it is created and the content becomes a blank string. This prevents
+        errors by ensuring all expected XML entities exist in the object. */        
         function ValidateXML() {
-        debugger;
+          //This function relies on the global variable xmlDoc.
+
           var XMLStrings = new Object();
           
           if(xmlDoc.getElementsByTagName("Title")[0].childNodes[0] != undefined)
@@ -115,9 +109,9 @@ debugger;
             XMLStrings.title = "";
             
           if(xmlDoc.getElementsByTagName("Summary")[0].childNodes[0] != undefined)
-            XMLStrings.summery = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
+            XMLStrings.summary = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
           else
-            XMLStrings.summery = "";
+            XMLStrings.summary = "";
             
           if(xmlDoc.getElementsByTagName("UserName")[0].childNodes[0] != undefined)
             XMLStrings.username = xmlDoc.getElementsByTagName("UserName")[0].childNodes[0].nodeValue;
@@ -143,27 +137,13 @@ debugger;
             XMLStrings.longitude = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
           else
             XMLStrings.longitude = "";
-            
-          if(xmlDoc.getElementsByTagName("Approach")[0].childNodes[0] != undefined)
-            XMLStrings.approach = xmlDoc.getElementsByTagName("Approach")[0].childNodes[0].nodeValue;
-          else
-            XMLStrings.approach = "";
-            
+                    
           if(xmlDoc.getElementsByTagName("Description")[0].childNodes[0] != undefined)
             XMLStrings.description = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
           else
             XMLStrings.description = "";
             
-          if(xmlDoc.getElementsByTagName("NOAAImage")[0].childNodes[0] != undefined)
-            XMLStrings.noaaimage = xmlDoc.getElementsByTagName("NOAAImage")[0].childNodes[0].nodeValue;
-          else
-            XMLStrings.noaaimage = "";
-            
-          if(xmlDoc.getElementsByTagName("Image")[0].childNodes[0] != undefined)
-            XMLStrings.image = xmlDoc.getElementsByTagName("Image")[0].childNodes[0].nodeValue;
-          else
-            XMLStrings.image = "";
-            
+                    
           return XMLStrings;
         }
         
@@ -175,40 +155,24 @@ debugger;
 
     <!-- Create a hidden form. This is used to process the URL. -->
     <FORM NAME="hiddenform">
-    <INPUT TYPE="hidden" NAME="hiddentext" SIZE="35">
+      <INPUT TYPE="hidden" NAME="hiddentext" SIZE="35">
     </form>
-
-    <!--
-    <div id="status">
-        <p>Loading the page...</p>
-    </div>
-    -->
     
-    <table style="width:100%" id="xmlcontent" border="0">
-      <tr>
-        <td id="NOAAImage" style="width:50%">        
-        </td>
-        <td id="Summary">        
-        </td>
-      </tr>
-      
-      <tr>
-        <td colspan="2"><br></br><h3>Approach:</h3></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="Approach">
-        </td>
-      </tr>
-      
-      <tr>
-        <td colspan="2"><br></br><h3>Description:</h3></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="Description">
-        </td>
-      </tr>
-      
-    </table>
+    
+    <p>
+      This page downloads the XML file for a particular location and displays the detailed data on that location. The XML can contain anything, including images and URLs. This example only contains text, like summaries and descriptions. 
+    </p>  
+    <br>
+    <h2>Summary:</h2>
+    <p id="Summary">
+      Waiting for data to download...
+    </p>
+    <br>
+    <h2>Full Description:</h2>
+    <p id="Description">
+      If this text does not dissapear within a few seconds, then the page was not able to connect to the server.
+    </p>
+    
     
   </body>
 </html>
