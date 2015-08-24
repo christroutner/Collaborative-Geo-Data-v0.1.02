@@ -13,6 +13,9 @@
 			
       // Global Variables
       var xmlDoc;
+      
+      //var ServerURL = '.'; //Use this for local server
+      var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com/'; //Live preview server
 
       // Wait until the DOM has loaded before querying the document
 			$(document).ready(function(){
@@ -42,7 +45,7 @@
         // Retrieve the XML file for this marker.
         // Call the XMLevent after the file finishes loading.
         var xmlFile = new XMLHttpRequest();
-        var FileName = "http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com/locations/" + UniqueID + ".xml";
+        var FileName = ServerURL+"locations/" + UniqueID + ".xml";
         xmlFile.open("GET", FileName, true);
         xmlFile.onreadystatechange = function() {
           if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
@@ -92,6 +95,7 @@
           //Update the DOM with data from the XML file.
           $('#Summary').html(XMLStrings.summary);
           $('#Description').html(XMLStrings.description);
+          $('#EditLink').html('<small><a href="ModifyLocation.htm?UniqueID=' + UniqueID + '" >Edit Location Details</a></small>');
 
 				}, false);
 
@@ -160,7 +164,7 @@
     
     
     <p>
-      This page downloads the XML file for a particular location and displays the detailed data on that location. The XML can contain anything, including images and URLs. This example only contains text, like summaries and descriptions. 
+      This page downloads the XML file for a particular location and displays the detailed data on that location. The XML can contain strings to any type of data: images, URLs, filenames, etc. This example only contains text, like summaries and descriptions. 
     </p>  
     <br>
     <h2>Summary:</h2>
@@ -172,6 +176,8 @@
     <p id="Description">
       If this text does not dissapear within a few seconds, then the page was not able to connect to the server.
     </p>
+    <br>
+      <p id="EditLink">Edit Location Details</p>
     
     
   </body>

@@ -19,6 +19,9 @@ var Location = new Object(); //Location object
 var CustomEvent = new events(); //Custom event object
 var globalResponse = new Object(); //Used to pass response context between functions.
 
+// CUSTOMIZATION VARIABLES
+var wwwDir = '/inetpub/wwwroot/'  //Windows 2008 Server
+//var wwwDir = '/var/www/'          //Linux
 
 function start(response, postData) {
   console.log("Request handler 'start' was called.");
@@ -69,14 +72,12 @@ function add_new(response, postData) {
   Location.latitude = querystring.parse(postData).latitude;
   Location.longitude = querystring.parse(postData).longitude;
   Location.summary = querystring.parse(postData).summary;
-  Location.approach = querystring.parse(postData).approach;
   Location.description = querystring.parse(postData).description;
-  Location.noaaimage = querystring.parse(postData).noaaimage;
-  Location.image1 = querystring.parse(postData).image1;
 
   // Read the data back out to the web page so the user can confirm they
   // Uploaded the data correctly.
   response.writeHead(200, {"Content-Type": "text/plain"});
+  response.write("Success! \n");
   response.write("You've sent the text: \n");
   response.write("UniqueID: " + Location.uniqueid + "\n");
   response.write("User Name: " + Location.username + "\n");
@@ -84,10 +85,8 @@ function add_new(response, postData) {
   response.write("Latitude: " + Location.latitude + "\n");
   response.write("Longitude: " + Location.longitude + "\n");
   response.write("Summary: " + Location.summary + "\n");
-  response.write("Approach & Anchoring: " + Location.approach+"\n");
   response.write("Description: " + Location.description + "\n");
-  response.write("NOAA Image URL: " + Location.noaaimage + "\n");
-  response.write("Image 1 URL: " + Location.image1 + "\n");
+  response.write("\n\nPress the back-button in your browser until you get back to the map. You should see your updated location information appear.\n");
 
   
   //Load the CSV file into memory.
@@ -142,7 +141,7 @@ function LoadCSV() {
   });
 
   //Execute the loading of the file.
-  fs.createReadStream('/var/www/MarkerData.csv').pipe(parser);
+  fs.createReadStream(wwwDir+'MarkerData.csv').pipe(parser);
 }
 
 //Called when the CSV file has been loaded into memory and
@@ -207,19 +206,10 @@ CustomEvent.on('CSVLoaded', function(localinput) {
     xmlLongitude.text = Location.longitude;
 
     xmlSummary = subElement(root, 'Summary');
-    xmlSummary.text = Location.summary;
-
-    xmlApproach = subElement(root, 'Approach');
-    xmlApproach.text = Location.approach;  
+    xmlSummary.text = Location.summary; 
 
     xmlDescription = subElement(root, 'Description');
     xmlDescription.text = Location.description;
-
-    xmlNOAAImage = subElement(root, 'NOAAImage');
-    xmlNOAAImage.text = ValidateString(Location.noaaimage);
-
-    xmlImage = subElement(root, 'Image');
-    xmlImage.text = ValidateString(Location.image1);
     
     //Add the data to a new line of the CSV file
     CSVData[CSVData.length] = [Location.uniqueid, Location.title, Location.latitude, Location.longitude];
@@ -249,7 +239,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
       
       //Copy the old XML file to the backup directory
       //Note: I need to read in the version number from the XML or CSV file
-      fs.rename('/var/www/locations/'+Location.uniqueid+'.xml', '/var/www/locations/backup/'
+      fs.rename(wwwDir+'locations/'+Location.uniqueid+'.xml', wwwDir+'locations/backup/'
        +Location.uniqueid+'_'+newversion.toString()+'.xml');
       console.log(Location.uniqueid+'.xml moved to backup directory.');
       
@@ -284,17 +274,8 @@ CustomEvent.on('CSVLoaded', function(localinput) {
       xmlSummary = subElement(root, 'Summary');
       xmlSummary.text = Location.summary;
 
-      xmlApproach = subElement(root, 'Approach');
-      xmlApproach.text = Location.approach;  
-
       xmlDescription = subElement(root, 'Description');
       xmlDescription.text = Location.description;
-
-      xmlNOAAImage = subElement(root, 'NOAAImage');
-      xmlNOAAImage.text = Location.noaaimage;
-
-      xmlImage = subElement(root, 'Image');
-      xmlImage.text = Location.image1;
       
     }
     //Any other condition, quit.
@@ -308,7 +289,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
   etree = new ElementTree(root1);
   xml = etree.write({'xml_declaration': true});
 
-  fs.writeFile("/var/www/locations/" + Location.uniqueid + ".xml", xml, function(err) {
+  fs.writeFile(wwwDir+"locations/" + Location.uniqueid + ".xml", xml, function(err) {
     if(err) {
       console.log(err);
     } else {
@@ -325,11 +306,16 @@ CustomEvent.on('CSVLoaded', function(localinput) {
 function DoesUniqueIDExist(strUniqueID) {
   var i;
   var val = -1;
-  
-  for(i = 0; i < UniqueIDList.length; i++) {
-    if(strUniqueID.toString() === UniqueIDList[i].toString()) {
-      val = i;
-    }        
+  try {
+	  for(i = 0; i < UniqueIDList.length; i++) {
+		if(strUniqueID.toString() === UniqueIDList[i].toString()) {
+		  val = i;
+		}        
+	  }
+  }
+  catch(e) {
+	console.log('Error caught in DoesUniqueIDExist(). strUniqueID = ' + strUniqueID.toString());
+	return false;
   }
   
   return val;
@@ -347,7 +333,7 @@ function ReadXML(local_uniqueid) {
 
   var data, etree;
 
-  data = fs.readFileSync('/var/www/locations/'+local_uniqueid+'.xml').toString();
+  data = fs.readFileSync(wwwDir+'locations/'+local_uniqueid+'.xml').toString();
   etree = et.parse(data);
 
   Location.xml = new Object();
@@ -361,10 +347,7 @@ function ReadXML(local_uniqueid) {
   Location.xml.latitude = etree.findtext('LocationEntity/Latitude');
   Location.xml.longitude = etree.findtext('LocationEntity/Longitude');
   Location.xml.summary = etree.findtext('LocationEntity/Summary');
-  Location.xml.approach = etree.findtext('LocationEntity/Approach');
   Location.xml.description = etree.findtext('LocationEntity/Description');
-  Location.xml.noaaimage = etree.findtext('LocationEntity/NOAAImage');
-  Location.xml.image = etree.findtext('LocationEntity/Image');
 
   console.log('Read in XML file: ' + local_uniqueid + '.xml');
 }
@@ -373,7 +356,7 @@ function ReadXML(local_uniqueid) {
 function WriteCSV() {
 
   //Write out the new CSV file
-  var CSVOutputFile = fs.createWriteStream('/var/www/MarkerData.csv');
+  var CSVOutputFile = fs.createWriteStream(wwwDir+'MarkerData.csv');
   
   //Write out the CSV data
   for(var i = 0; i < CSVData.length; i++) {

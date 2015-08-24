@@ -8,3 +8,5 @@ npm install ya-csv
 -In the Node directory is a MarkerData.csv file and a /locations folder. Move these to the root www folder on the server. 
 -All HTML files will need to be updated with the URL to these server files.
 -If the server-side files are on a different machine than the HTML pages, then you'll need to configure the server for this with the HTTP header.
+
+-Server starts on port 8888

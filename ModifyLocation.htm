@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!--
-This page is for modifying an existing location. This page should be called 
+This page is for modifying an existing location. This page URL should be called 
 with a POST variable containing the UniqueID of the location to be modified.
+
 The program has following flow:
 -Retrieve the location UniqueID from the URL (done)
 -Open the location XML file (done)
@@ -13,21 +14,22 @@ The program has following flow:
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
 		
-    <title>View Details on this Location</title>
+    <title>Modify Location</title>
 
-		<script src="./jquery.js"></script>
-    <script src="./jquery.csv-0.71.js"></script>
+		<script src="./js/jquery.js"></script>
+    <script src="./js/jquery.csv-0.71.js"></script>
     
 		<script>
 
       // Global Variables
       var xmlDoc;
       
+      //var ServerURL = '.'; //Use this for local server
+      var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
+      
       // Wait until the DOM has loaded before querying the document
 			$(document).ready(function(){
 				
-        var UniqueID;
-        
         //Create a custom event for when the XML file is finished loading.
         var XMLevent = new CustomEvent('XMLLoaded', {
         });
@@ -46,12 +48,12 @@ The program has following flow:
             return(str.substring(point+1,str.length));
         }
         
-        UniqueID = delineate2(text);
+        var UniqueID = delineate2(text);
 
         // Retrieve the XML file for this marker.
         // Call the XMLevent after the file finishes loading.
         var xmlFile = new XMLHttpRequest();
-        var FileName = "./locations/" + UniqueID + ".xml";
+        var FileName = ServerURL+"/locations/" + UniqueID + ".xml";
         xmlFile.open("GET", FileName, true);
         xmlFile.onreadystatechange = function() {
           if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
@@ -73,35 +75,26 @@ The program has following flow:
         // Create an event listener that executes after the XML file has finished loading.
 				document.addEventListener('XMLLoaded', function (e) {
 					
-        // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
-        
-        //UniqueID
-        document.forms[1].uniqueid.value = UniqueID;
-        
-        //Title
-        document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
-        
-        //Latitude
-        document.forms[1].latitude.value = xmlDoc.getElementsByTagName("Latitude")[0].childNodes[0].nodeValue;
-        
-        //Longitude
-        document.forms[1].longitude.value = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
-        
-        //Summary
-        document.forms[1].summary.value = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
-        
-        //Approach
-        document.forms[1].approach.value = xmlDoc.getElementsByTagName("Approach")[0].childNodes[0].nodeValue;
-        
-        //Description
-        document.forms[1].description.value = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
-        
-        //NOAA Image
-        document.forms[1].noaaimage.value = xmlDoc.getElementsByTagName("NOAAImage")[0].childNodes[0].nodeValue;
-        
-        //Image
-					document.forms[1].image1.value = xmlDoc.getElementsByTagName("Image")[0].childNodes[0].nodeValue;
-                    
+          // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
+
+          //UniqueID
+          document.forms[1].uniqueid.value = UniqueID;
+
+          //Title
+          document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
+
+          //Latitude
+          document.forms[1].latitude.value = xmlDoc.getElementsByTagName("Latitude")[0].childNodes[0].nodeValue;
+
+          //Longitude
+          document.forms[1].longitude.value = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
+
+          //Summary
+          document.forms[1].summary.value = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
+
+          //Description
+          document.forms[1].description.value = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+
 				}, false);
                 
                 
@@ -117,10 +110,15 @@ The program has following flow:
     </form>
 
     <div id="status">
-        <p>Loading the page...</p>
+        <p>Loading the page...  If this message does not go away in a few seconds, then this page was unable to connect to the server.</p>
     </div>
   
-    <form action="http://christroutner.dyndns.org:8888/add_new" method="post">
+    <!--
+      Note that the form below calls the same web-service as the AddNew.html form. 
+      The Node.js code that runs on the server is smart enough to know that submitting
+      data on a UniqueID that already exists means that the location is getting updated.
+    -->
+    <form action="http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com:8888/add_new" method="post">
       <p>UniqueID: <textarea name="uniqueid" rows="1" cols="80"></textarea></p><br>
       <p>Enter a title for the map marker: <br>
       <textarea name="title" rows="1" cols="80"></textarea></p>
@@ -130,14 +128,8 @@ The program has following flow:
       <textarea name="longitude" rows="1" cols="80"></textarea></p>
       <p>Enter a <b>summary</b> of the location: <br>
       <textarea name="summary" rows="10" cols="80"></textarea></p>
-      <p>Enter advice on <b>approaching and anchoraging</b> at this location: <br>
-      <textarea name="approach" rows="20" cols="80"></textarea></p>
       <p>Enter a detailed <b>description</b> of the location: <br>
       <textarea name="description" rows="20" cols="80"></textarea></p>
-      <p>Enter a URL for a <b>NOAA Image</b> of the location: <br>
-      <textarea name="noaaimage" rows="1" cols="80"></textarea></p>
-      <p>Enter a URL for an <b>image</b> of the location: <br>
-      <textarea name="image1" rows="1" cols="80"></textarea></p>
       <br></br>
       <input type="submit" value="Submit text" />
     </form>

@@ -4,8 +4,15 @@
     <title>Add New Location</title>    
 </head>
 <body style="height:100%">
-	<form action="http://christroutner.dyndns.org:8888/add_new" method="post">
-	  <p>Enter a UniqueID for the map marker: <br>
+  <p>A couple things to note:
+    <ul>
+      <li>The UniqueID field blank should exist but be left blank when creating a new location and submitting it to the Node webservice.</li>
+      <li>You can make up any UserName you want. There is no logic behind this value at the moment.</li>
+    </ul>  
+  </p>
+  <br><br>
+	<form action="http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com:8888/add_new" method="post">
+	  <p>Leave this UniqueID field blank: <br>
 	  <textarea name="uniqueid" rows="1" cols="80"></textarea></p>
       <p>Enter a Username for the map marker: <br>
 	  <textarea name="username" rows="1" cols="80"></textarea></p>
@@ -17,14 +24,8 @@
 	  <textarea name="longitude" rows="1" cols="80"></textarea></p>
 	  <p>Enter a <b>summary</b> of the location: <br>
 	  <textarea name="summary" rows="10" cols="80"></textarea></p>
-	  <p>Enter advice on <b>approaching and anchoraging</b> at this location: <br>
-	  <textarea name="approach" rows="20" cols="80"></textarea></p>
 	  <p>Enter a detailed <b>description</b> of the location: <br>
 	  <textarea name="description" rows="20" cols="80"></textarea></p>
-	  <p>Enter a URL for a <b>NOAA Image</b> of the location: <br>
-	  <textarea name="noaaimage" rows="1" cols="80"></textarea></p>
-	  <p>Enter a URL for an <b>image</b> of the location: <br>
-	  <textarea name="image1" rows="1" cols="80"></textarea></p>
 	  <br></br>
 	  <input type="submit" value="Submit text" />
 	 </form>

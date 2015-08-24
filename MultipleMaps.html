@@ -171,7 +171,7 @@
         //Populate the summary window.
         $('#location_title').text(xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue);
         $('#summary_body').text(xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue);
-        $('#modify_link').html('<small><a href="ViewDetails.htm?UniqueID=' + marker_array[xmlMarkerIndex].UniqueID + '" target="_blank" >More Details</a></small>');
+        $('#modify_link').html('<small><a href="ViewDetails.htm?UniqueID=' + marker_array[xmlMarkerIndex].UniqueID + '" >More Details</a></small>');
       }, false);
 
     }
@@ -188,6 +188,8 @@
                       <h1 id="location_title"></h1>
                       <p id="summary_body">Click a map marker to load the location summary into this window.</p>
                       <p id="modify_link"><small></small></p>
+                      <br>
+                      <p id="add_new_link">You can also <a href="AddNew.html">Add a New Location</a></p>
                     </div>
                     <div id="map1" style="border: 1px solid black; height :50%;padding: 0px; margin: 0px">
                     </div>
