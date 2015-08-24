@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--
+This page is for modifying an existing location. This page should be called 
+with a POST variable containing the UniqueID of the location to be modified.
+The program has following flow:
+-Retrieve the location UniqueID from the URL (done)
+-Open the location XML file (done)
+-Populate the text boxes with the information in the XML
+-Submit the data Modify (node) web service when the submit button is clicked.
+-->
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		
+    <title>View Details on this Location</title>
+
+		<script src="./jquery.js"></script>
+    <script src="./jquery.csv-0.71.js"></script>
+    
+		<script>
+
+      // Global Variables
+      var xmlDoc;
+      
+      // Wait until the DOM has loaded before querying the document
+			$(document).ready(function(){
+				
+        var UniqueID;
+        
+        //Create a custom event for when the XML file is finished loading.
+        var XMLevent = new CustomEvent('XMLLoaded', {
+        });
+        
+        // RETRIEVE THE URL WHICH CONTAINS THE PASSED IN UNIQUEID
+        //Create a variable for the URL (not a string).
+        var locate = window.location 
+        //Dump the URL data into the hidden form, forcing it into a string of text.
+        document.hiddenform.hiddentext.value = locate 
+        //Read the URL out of the hidden text box.
+        var text = document.hiddenform.hiddentext.value 
+
+        //This function retrieves the UniqueID value from the URL string.
+        function delineate2(str){
+            point = str.lastIndexOf("=");
+            return(str.substring(point+1,str.length));
+        }
+        
+        UniqueID = delineate2(text);
+
+        // Retrieve the XML file for this marker.
+        // Call the XMLevent after the file finishes loading.
+        var xmlFile = new XMLHttpRequest();
+        var FileName = "./locations/" + UniqueID + ".xml";
+        xmlFile.open("GET", FileName, true);
+        xmlFile.onreadystatechange = function() {
+          if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (xmlFile.status === 200) {  // Makes sure it's found the file.
+              
+              // Parse the XML from the raw text
+              var parser = new DOMParser();
+              xmlDoc = parser.parseFromString(xmlFile.responseText, "text/xml");
+              
+              // Call the XMLEvent to signal that the XML is finished loading
+              document.dispatchEvent(XMLevent)
+              
+            }
+          }
+        }
+        xmlFile.send(null); //Execute the file request.
+                
+                
+        // Create an event listener that executes after the XML file has finished loading.
+				document.addEventListener('XMLLoaded', function (e) {
+					
+        // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
+        
+        //UniqueID
+        document.forms[1].uniqueid.value = UniqueID;
+        
+        //Title
+        document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
+        
+        //Latitude
+        document.forms[1].latitude.value = xmlDoc.getElementsByTagName("Latitude")[0].childNodes[0].nodeValue;
+        
+        //Longitude
+        document.forms[1].longitude.value = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
+        
+        //Summary
+        document.forms[1].summary.value = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
+        
+        //Approach
+        document.forms[1].approach.value = xmlDoc.getElementsByTagName("Approach")[0].childNodes[0].nodeValue;
+        
+        //Description
+        document.forms[1].description.value = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+        
+        //NOAA Image
+        document.forms[1].noaaimage.value = xmlDoc.getElementsByTagName("NOAAImage")[0].childNodes[0].nodeValue;
+        
+        //Image
+					document.forms[1].image1.value = xmlDoc.getElementsByTagName("Image")[0].childNodes[0].nodeValue;
+                    
+				}, false);
+                
+                
+			});
+		</script>
+	</head>
+  
+	<body>
+
+    <!-- Create a hidden form. This is used to process the URL. -->
+    <FORM NAME="hiddenform">
+    <INPUT TYPE="hidden" NAME="hiddentext" SIZE="35">
+    </form>
+
+    <div id="status">
+        <p>Loading the page...</p>
+    </div>
+  
+    <form action="http://christroutner.dyndns.org:8888/add_new" method="post">
+      <p>UniqueID: <textarea name="uniqueid" rows="1" cols="80"></textarea></p><br>
+      <p>Enter a title for the map marker: <br>
+      <textarea name="title" rows="1" cols="80"></textarea></p>
+      <p>Enter the latitude: <br>
+      <textarea name="latitude" rows="1" cols="80"></textarea></p>
+      <p>Enter the longitude: <br>
+      <textarea name="longitude" rows="1" cols="80"></textarea></p>
+      <p>Enter a <b>summary</b> of the location: <br>
+      <textarea name="summary" rows="10" cols="80"></textarea></p>
+      <p>Enter advice on <b>approaching and anchoraging</b> at this location: <br>
+      <textarea name="approach" rows="20" cols="80"></textarea></p>
+      <p>Enter a detailed <b>description</b> of the location: <br>
+      <textarea name="description" rows="20" cols="80"></textarea></p>
+      <p>Enter a URL for a <b>NOAA Image</b> of the location: <br>
+      <textarea name="noaaimage" rows="1" cols="80"></textarea></p>
+      <p>Enter a URL for an <b>image</b> of the location: <br>
+      <textarea name="image1" rows="1" cols="80"></textarea></p>
+      <br></br>
+      <input type="submit" value="Submit text" />
+    </form>
+  </body>
+</html>
