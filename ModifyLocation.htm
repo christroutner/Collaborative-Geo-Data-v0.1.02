@@ -76,7 +76,8 @@ The program has following flow:
 				document.addEventListener('XMLLoaded', function (e) {
 					
           // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
-
+          $('#status').text('XML successfully retrieved from server!');
+          
           //UniqueID
           document.forms[1].uniqueid.value = UniqueID;
 
