@@ -305,18 +305,19 @@ CustomEvent.on('CSVLoaded', function(localinput) {
 //Returns true if the UniqueID exists in the UniqueIDList object.
 //Returns false otherwise.
 function DoesUniqueIDExist(strUniqueID) {
+  debugger;
   var i;
   var val = -1;
   try {
-	  for(i = 0; i < UniqueIDList.length; i++) {
-		if(strUniqueID.toString() === UniqueIDList[i].toString()) {
-		  val = i;
-		}        
+      for(i = 0; i < UniqueIDList.length; i++) {
+      if(strUniqueID.toString() === UniqueIDList[i].toString()) {
+        val = i;
+      }        
 	  }
   }
   catch(e) {
-	console.log('Error caught in DoesUniqueIDExist(). strUniqueID = ' + strUniqueID.toString());
-	return false;
+    console.log('Error caught in DoesUniqueIDExist(). strUniqueID = ' + strUniqueID.toString());
+    return false;
   }
   
   return val;
