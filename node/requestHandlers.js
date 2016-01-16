@@ -20,8 +20,9 @@ var CustomEvent = new events(); //Custom event object
 var globalResponse = new Object(); //Used to pass response context between functions.
 
 // CUSTOMIZATION VARIABLES
-var wwwDir = '/inetpub/wwwroot/'  //Windows 2008 Server
+//var wwwDir = '/inetpub/wwwroot/'  //Windows 2008 Server
 //var wwwDir = '/var/www/'          //Linux
+var wwwDir = './'                   //KeystoneJS
 
 function start(response, postData) {
   console.log("Request handler 'start' was called.");
