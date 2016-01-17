@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html style="height: 100%">
 <head>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  
+</head>
+
+<body style="height: 100%" onload="initialize()">
+    <div style="height: 100%; background-color: green; margin: 0px">
+        <table style="width:100%; height:100%">
+            <tr style="height:100%">
+                <td rowspan="2" style="width: 25%; height: 100%">
+                    <div id="summary" style="border: 1px solid black; height: 50%;padding: 0px; margin: 0px;background-color: white">
+                      <h1 id="location_title"></h1>
+                      <p id="summary_body">Click a map marker to load the location summary into this window.</p>
+                      <p id="modify_link"><small></small></p>
+                      <br>
+                      <p id="add_new_link">You can also <a href="AddNew.html">Add a New Location</a></p>
+                    </div>
+                    <div id="map1" style="border: 1px solid black; height :50%;padding: 0px; margin: 0px">
+                    </div>
+                </td>
+                <td>
+                    <div id="map2" style="border: 2px solid black; height:100%; width: 100%; padding: 0px; margin: 0px">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
   <script src="./js/jquery.js"></script>
   <script src="./js/jquery.csv-0.71.js"></script>
+  <script src="server-data.js"></script> <!-- Put your server connection data in this file. -->
 
   <script type="text/javascript">
     /************************************************************************
@@ -32,7 +60,8 @@
     var map1, map2; //Map 2 is the primary user-interface. Map 1 is zoomed out view of Map 2.
 
     //var ServerURL = '.'; //Use this for local server
-    var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
+    //var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
+    var ServerURL = 'http://'+serverData.webServer.url+":"+serverData.webServer.port+'/geodata/node';
 
     //Enable the Google Maps Visual Refresh: http://bit.ly/1NPH12z
     google.maps.visualRefresh = true;
@@ -80,8 +109,10 @@
       //Get the CSV file containing the marker data. Trigger the CSVLoaded
       //event once the file finishes loading.
       var txtFile = new XMLHttpRequest();
+      debugger;
       txtFile.open("GET", ServerURL+"/MarkerData.csv", true);
       txtFile.onreadystatechange = function() {
+        debugger;
         if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
           if (txtFile.status === 200) {  // Makes sure it's found the file.
 
@@ -177,30 +208,5 @@
     }
 
   </script>
-</head>
-
-<body style="height: 100%" onload="initialize()">
-    <div style="height: 100%; background-color: green; margin: 0px">
-        <table style="width:100%; height:100%">
-            <tr style="height:100%">
-                <td rowspan="2" style="width: 25%; height: 100%">
-                    <div id="summary" style="border: 1px solid black; height: 50%;padding: 0px; margin: 0px;background-color: white">
-                      <h1 id="location_title"></h1>
-                      <p id="summary_body">Click a map marker to load the location summary into this window.</p>
-                      <p id="modify_link"><small></small></p>
-                      <br>
-                      <p id="add_new_link">You can also <a href="AddNew.html">Add a New Location</a></p>
-                    </div>
-                    <div id="map1" style="border: 1px solid black; height :50%;padding: 0px; margin: 0px">
-                    </div>
-                </td>
-                <td>
-                    <div id="map2" style="border: 2px solid black; height:100%; width: 100%; padding: 0px; margin: 0px">
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-</body>
-
+  
 </html>

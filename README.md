@@ -46,7 +46,7 @@ Here are the step-by-step direction for setting up and running the program. It's
 You will need to install the following npm packages:
 
 ```
-npm install csv-parse*
+npm install csv-parse
 npm install elementtree
 npm install rander
 npm install ya-csv
