@@ -369,5 +369,4 @@ return str;
 
 exports.start = start;
 exports.upload = upload;
-exports.csvtest = csvtest;
 exports.add_new = add_new;
