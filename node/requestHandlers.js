@@ -17,7 +17,7 @@ var CSVData = new Array(); //Object to hold CSV data
 var UniqueIDList = new Array(); //List of UniqueIDs in the CSV file
 var Location = new Object(); //Location object
 var CustomEvent = new events(); //Custom event object
-var globalResponse = new Object(); //Used to pass response context between functions.
+//var globalResponse = new Object(); //Used to pass response context between functions.
 
 // CUSTOMIZATION VARIABLES
 //var wwwDir = '/inetpub/wwwroot/'  //Windows 2008 Server
@@ -285,7 +285,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
     //Any other condition, quit.
     else {
       console.log('UniqueID '+Location.uniqueid+' does not exist in CSV file.');
-      globalResponse.end();
+      //globalResponse.end();
     }
   }
   
@@ -302,7 +302,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
   });
   
   //Close the response.
-  globalResponse.end();
+  //globalResponse.end();
 });
 
 //Returns true if the UniqueID exists in the UniqueIDList object.
