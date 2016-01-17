@@ -61,7 +61,7 @@
 
     //var ServerURL = '.'; //Use this for local server
     //var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
-    var ServerURL = 'http://'+serverData.webServer.url+":"+serverData.webServer.port+'/geodata/node';
+    var ServerURL = 'http://'+serverData.webServer.url+":"+serverData.webServer.port;
 
     //Enable the Google Maps Visual Refresh: http://bit.ly/1NPH12z
     google.maps.visualRefresh = true;
@@ -110,7 +110,7 @@
       //event once the file finishes loading.
       var txtFile = new XMLHttpRequest();
       debugger;
-      txtFile.open("GET", ServerURL+"/MarkerData.csv", true);
+      txtFile.open("GET", "./MarkerData.csv", true);
       txtFile.onreadystatechange = function() {
         debugger;
         if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.

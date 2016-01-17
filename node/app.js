@@ -25,6 +25,7 @@ var hbs;
 /*
  * Config for Production and Development
  */
+/*
 if (process.env.NODE_ENV === 'production') {
     // Set the default layout and locate layouts and partials
     app.engine('handlebars', exphbs({
@@ -40,6 +41,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/dist/assets'));
 
 } else {
+*/
     app.engine('handlebars', exphbs({
         // Default Layout and locate layouts and partials
         defaultLayout: 'main',
@@ -52,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
     
     // Locate the assets
     app.use(express.static(__dirname + '/assets'));
-}
+//}
 
 // Set Handlebars
 app.set('view engine', 'handlebars');
