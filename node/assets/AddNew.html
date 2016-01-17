@@ -63,30 +63,27 @@
     //This function send the form data to the server. It mimics the behavior of a conventional HTML form,
     //but allows the flexibility of a JavaScript program.
     var send_data = function() {
-      var thisForm = new FormData();
-      thisForm.append('uniqueid', ''); //Force blank. This signals a new entry to the Node add_new() request handler.
-      thisForm.append('username', $('#username').val());
-      thisForm.append('title', $('#title').val());
-      thisForm.append('latitude', $('#latitude').val());
-      thisForm.append('longitude', $('#longitude').val());
-      thisForm.append('summary', $('#summary').val());
-      thisForm.append('description', $('#description').val());
-      
-      var opts = {
-        url: 'http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new',
-        data: thisForm,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function(data){
-          debugger;
-          console.log('Add New was successful! ');
-        }
+    
+    var location_info = {        
+        'uniqueid': '',
+        'username': $('#username').val(),
+        'title': $('#title').val(),
+        'latitude': $('#latitude').val(),
+        'longitude': $('#longitude').val(),
+        'summary': $('#summary').val(),
+        'description': $('#description').val()
       };
 
-    //Execute the AJAX operation.
-    jQuery.ajax(opts);
+      //Upload the new form to the server
+      $.get('http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new', location_info, function (data) { 
+        debugger;
+        if( data.slice(3,10) == "Success" ) {
+          alert('Location information uploaded to server successfully.');
+        } else {
+          alert('Location information not uploaded to server!');
+        }
+
+      });
       
     }
   </script>
