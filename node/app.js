@@ -20,7 +20,7 @@ var exphbs = require('express3-handlebars');
 var hbs;
 
 // For gzip compression
-app.use(express.compress());
+//app.use(express.compress());
 
 /*
  * Config for Production and Development
