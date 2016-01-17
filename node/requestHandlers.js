@@ -66,6 +66,8 @@ incremented.
 function add_new(request, response, next) {
   console.log("Request handler 'add_new' was called.");
 
+  debugger;
+  
   //Move data from the URL to the Location object.
   Location.uniqueid = request.query.uniqueid;
   Location.username = request.query.username;
@@ -87,19 +89,6 @@ function add_new(request, response, next) {
       "Summary: " + Location.summary + "<br>"+
       "Description: " + Location.description + "</p>";
       
-/*      
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Success! \n");
-  response.write("You've sent the text: \n");
-  response.write("UniqueID: " + Location.uniqueid + "\n");
-  response.write("User Name: " + Location.username + "\n");
-  response.write("Title: " + Location.title + "\n");
-  response.write("Latitude: " + Location.latitude + "\n");
-  response.write("Longitude: " + Location.longitude + "\n");
-  response.write("Summary: " + Location.summary + "\n");
-  response.write("Description: " + Location.description + "\n");
-  response.write("\n\nPress the back-button in your browser until you get back to the map. You should see your updated location information appear.\n");
-*/
   response.send(successMsg);
   
   //Load the CSV file into memory.
@@ -129,6 +118,7 @@ function csvtest(response, postData) {
 }
 
 function LoadCSV() {
+  debugger;
   var i;
   UniqueIDList = new Array();
 
