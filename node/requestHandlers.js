@@ -154,7 +154,7 @@ function LoadCSV() {
   });
 
   //Execute the loading of the file.
-  fs.createReadStream(wwwDir+'MarkerData.csv').pipe(parser);
+  fs.createReadStream('./assets/MarkerData.csv').pipe(parser);
 }
 
 //Called when the CSV file has been loaded into memory and
