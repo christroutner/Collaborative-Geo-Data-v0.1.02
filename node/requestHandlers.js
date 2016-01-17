@@ -99,23 +99,6 @@ function add_new(request, response, next) {
   //globalResponse = response;  //Pass response object to global.
 }
 
-//Note: This was an example function. I don't use this in v0.1.00
-function csvtest(response, postData) {
-  console.log("Request handler 'csvtest' was called.");
-
-  //Example from githum.com/wdavidw/node-csv-parse/blob/master/samples/fs_read.js
-  var parser = parse({delimiter: '`'}, function(err, data) {
-    console.log("Marker 1: " + data[0]);
-    console.log("Marker 2: " + data[1]);
-    console.log("Marker 3: " + data[2]);
-    console.log("Marker 4: " + data[3]);
-  });
-
-  fs.createReadStream('/var/www/MarkerData.csv').pipe(parser);
-
-  response.write("CSV Data read.");
-  response.end();
-}
 
 function LoadCSV() {
   debugger;
@@ -361,7 +344,7 @@ function ReadXML(local_uniqueid) {
 function WriteCSV() {
 
   //Write out the new CSV file
-  var CSVOutputFile = fs.createWriteStream(wwwDir+'MarkerData.csv');
+  var CSVOutputFile = fs.createWriteStream(wwwDir+'assets/MarkerData.csv');
   
   //Write out the CSV data
   for(var i = 0; i < CSVData.length; i++) {
