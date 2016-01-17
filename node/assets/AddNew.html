@@ -11,7 +11,9 @@
     </ul>  
   </p>
   <br><br>
-	<!-- <form action="http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com:8888/add_new" method="post"> -->
+
+  <!-- Conventional HTML form. Here for reference. -->
+  <!--
   <form action="http://christroutner.com:8888/add_new" method="post">
 	  <p>Leave this UniqueID field blank: <br>
 	  <textarea name="uniqueid" rows="1" cols="80" disabled></textarea></p>
@@ -29,6 +31,64 @@
 	  <textarea name="description" rows="20" cols="80"></textarea></p>
 	  <br></br>
 	  <input type="submit" value="Submit text" />
-	 </form>
+ </form>
+ -->
+
+  <!-- Using jQuery allows for dynamic configuration of server. -->
+  <form>
+	  <p>Leave this UniqueID field blank: <br>
+	  <textarea name="uniqueid" rows="1" cols="80" disabled></textarea></p>
+      <p>Enter a Username for the map marker: <br>
+	  <textarea name="username" id="username" rows="1" cols="80"></textarea></p>
+      <p>Enter a title for the map marker: <br>
+	  <textarea name="title" id="title" rows="1" cols="80"></textarea></p>
+	  <p>Enter the latitude: <br>
+	  <textarea name="latitude" id="latitude" rows="1" cols="80"></textarea></p>
+	  <p>Enter the longitude: <br>
+	  <textarea name="longitude" id="longitude" rows="1" cols="80"></textarea></p>
+	  <p>Enter a <b>summary</b> of the location: <br>
+	  <textarea name="summary" id="summary" rows="10" cols="80"></textarea></p>
+	  <p>Enter a detailed <b>description</b> of the location: <br>
+	  <textarea name="description" id="description" rows="20" cols="80"></textarea></p>
+	  <br></br>
+	  <input type="button" value="Submit Location" onclick="send_data()" />
+ </form>
+
 </body>
+
+  <script src="./js/jquery.js"></script>
+  <script src="server-data.js"></script> <!-- Put your server connection data in this file. -->
+  <script type="text/javascript">
+
+    //This function send the form data to the server. It mimics the behavior of a conventional HTML form,
+    //but allows the flexibility of a JavaScript program.
+    var send_data = function() {
+      var thisForm = new FormData();
+      thisForm.append('uniqueid', ''); //Force blank. This signals a new entry to the Node add_new() request handler.
+      thisForm.append('username', $('#username').val());
+      thisForm.append('title', $('#title').val());
+      thisForm.append('latitude', $('#latitude').val());
+      thisForm.append('longitude', $('#longitude').val());
+      thisForm.append('summary', $('#summary').val());
+      thisForm.append('description', $('#description').val());
+      
+      var opts = {
+        url: 'http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new',
+        data: thisForm,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data){
+          debugger;
+          console.log('Add New was successful! ');
+        }
+      };
+
+    //Execute the AJAX operation.
+    jQuery.ajax(opts);
+      
+    }
+  </script>
+
 </html>

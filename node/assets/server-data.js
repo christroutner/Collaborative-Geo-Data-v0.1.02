@@ -1,4 +1,4 @@
-var serverData = {
+var serverData = { 
 
   webServer : {
     'url': '198.199.118.209',

@@ -63,20 +63,31 @@ number is appended to the file name.
 --A new XML file is created for that location and the version number is
 incremented.
 ******************************************************************************/
-function add_new(response, postData) {
+function add_new(request, response, next) {
   console.log("Request handler 'add_new' was called.");
 
   //Move data from the URL to the Location object.
-  Location.uniqueid = querystring.parse(postData).uniqueid;
-  Location.username = querystring.parse(postData).username;
-  Location.title = querystring.parse(postData).title;
-  Location.latitude = querystring.parse(postData).latitude;
-  Location.longitude = querystring.parse(postData).longitude;
-  Location.summary = querystring.parse(postData).summary;
-  Location.description = querystring.parse(postData).description;
+  Location.uniqueid = request.query.uniqueid;
+  Location.username = request.query.username;
+  Location.title = request.query.title;
+  Location.latitude = request.query.latitude;
+  Location.longitude = request.query.longitude;
+  Location.summary = request.query.summary;
+  Location.description = request.query.description;
 
   // Read the data back out to the web page so the user can confirm they
   // Uploaded the data correctly.
+  var successMsg = "<p>Success! <br>"+
+      "You've sent the text: <br>"+
+      "UniqueID: " + Location.uniqueid + "<br>" +
+      "User Name: " + Location.username + "<br>"+
+      "Title: " + Location.title + "<br>"+
+      "Latitude: " + Location.latitude + "<br>"+
+      "Longitude: " + Location.longitude + "<br>"+
+      "Summary: " + Location.summary + "<br>"+
+      "Description: " + Location.description + "</p>";
+      
+/*      
   response.writeHead(200, {"Content-Type": "text/plain"});
   response.write("Success! \n");
   response.write("You've sent the text: \n");
@@ -88,7 +99,8 @@ function add_new(response, postData) {
   response.write("Summary: " + Location.summary + "\n");
   response.write("Description: " + Location.description + "\n");
   response.write("\n\nPress the back-button in your browser until you get back to the map. You should see your updated location information appear.\n");
-
+*/
+  response.send(successMsg);
   
   //Load the CSV file into memory.
   LoadCSV();
