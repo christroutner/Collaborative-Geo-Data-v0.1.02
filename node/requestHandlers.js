@@ -243,7 +243,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
       
       //Copy the old XML file to the backup directory
       //Note: I need to read in the version number from the XML or CSV file
-      fs.rename(wwwDir+'locations/'+Location.uniqueid+'.xml', wwwDir+'locations/backup/'
+      fs.rename(wwwDir+'assets/locations/'+Location.uniqueid+'.xml', wwwDir+'assets/locations/backup/'
        +Location.uniqueid+'_'+newversion.toString()+'.xml');
       console.log(Location.uniqueid+'.xml moved to backup directory.');
       
@@ -293,7 +293,7 @@ CustomEvent.on('CSVLoaded', function(localinput) {
   etree = new ElementTree(root1);
   xml = etree.write({'xml_declaration': true});
 
-  fs.writeFile(wwwDir+"locations/" + Location.uniqueid + ".xml", xml, function(err) {
+  fs.writeFile(wwwDir+"assets/locations/" + Location.uniqueid + ".xml", xml, function(err) {
     if(err) {
       console.log(err);
     } else {
@@ -338,7 +338,7 @@ function ReadXML(local_uniqueid) {
 
   var data, etree;
 
-  data = fs.readFileSync(wwwDir+'locations/'+local_uniqueid+'.xml').toString();
+  data = fs.readFileSync(wwwDir+'assets/locations/'+local_uniqueid+'.xml').toString();
   etree = et.parse(data);
 
   Location.xml = new Object();
