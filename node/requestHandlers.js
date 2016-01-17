@@ -96,7 +96,7 @@ function add_new(request, response, next) {
   
   //The rest of the response for this function is handled by the
   //CSVLoaded event after the CSV file has been loaded into memory. 
-  globalResponse = response;  //Pass response object to global.
+  //globalResponse = response;  //Pass response object to global.
 }
 
 //Note: This was an example function. I don't use this in v0.1.00
@@ -162,7 +162,8 @@ CustomEvent.on('CSVLoaded', function(localinput) {
   var xmlUniqueID, xmlTitle, xmlUserName, xmlCurrentVersion, xmlDateUpdate, 
    xmlLatitude, xmlLongitude, xmlSummary, xmlApproach, xmlDescription, 
    xmlNOAAImage, xmlImage1;
-
+  
+  debugger;
   console.log("CSV Loaded. Processing...");
  
   // DECISION LOGIC BASED ON UNQIUEID
