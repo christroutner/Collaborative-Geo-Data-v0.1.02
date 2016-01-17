@@ -16,91 +16,7 @@ The program has following flow:
 		
     <title>Modify Location</title>
 
-		<script src="./js/jquery.js"></script>
-    <script src="./js/jquery.csv-0.71.js"></script>
-    
-		<script>
-
-      // Global Variables
-      var xmlDoc;
-      
-      //var ServerURL = '.'; //Use this for local server
-      var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
-      
-      // Wait until the DOM has loaded before querying the document
-			$(document).ready(function(){
-				
-        //Create a custom event for when the XML file is finished loading.
-        var XMLevent = new CustomEvent('XMLLoaded', {
-        });
-        
-        // RETRIEVE THE URL WHICH CONTAINS THE PASSED IN UNIQUEID
-        //Create a variable for the URL (not a string).
-        var locate = window.location 
-        //Dump the URL data into the hidden form, forcing it into a string of text.
-        document.hiddenform.hiddentext.value = locate 
-        //Read the URL out of the hidden text box.
-        var text = document.hiddenform.hiddentext.value 
-
-        //This function retrieves the UniqueID value from the URL string.
-        function delineate2(str){
-            point = str.lastIndexOf("=");
-            return(str.substring(point+1,str.length));
-        }
-        
-        var UniqueID = delineate2(text);
-
-        // Retrieve the XML file for this marker.
-        // Call the XMLevent after the file finishes loading.
-        var xmlFile = new XMLHttpRequest();
-        var FileName = ServerURL+"/locations/" + UniqueID + ".xml";
-        xmlFile.open("GET", FileName, true);
-        xmlFile.onreadystatechange = function() {
-          if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
-            if (xmlFile.status === 200) {  // Makes sure it's found the file.
-              
-              // Parse the XML from the raw text
-              var parser = new DOMParser();
-              xmlDoc = parser.parseFromString(xmlFile.responseText, "text/xml");
-              
-              // Call the XMLEvent to signal that the XML is finished loading
-              document.dispatchEvent(XMLevent)
-              
-            }
-          }
-        }
-        xmlFile.send(null); //Execute the file request.
-                
-                
-        // Create an event listener that executes after the XML file has finished loading.
-				document.addEventListener('XMLLoaded', function (e) {
-					
-          // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
-          $('#status').text('XML successfully retrieved from server!');
-          
-          //UniqueID
-          document.forms[1].uniqueid.value = UniqueID;
-
-          //Title
-          document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
-
-          //Latitude
-          document.forms[1].latitude.value = xmlDoc.getElementsByTagName("Latitude")[0].childNodes[0].nodeValue;
-
-          //Longitude
-          document.forms[1].longitude.value = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
-
-          //Summary
-          document.forms[1].summary.value = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
-
-          //Description
-          document.forms[1].description.value = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
-
-				}, false);
-                
-                
-			});
-		</script>
+		
 	</head>
   
 	<body>
@@ -135,4 +51,91 @@ The program has following flow:
       <input type="submit" value="Submit text" />
     </form>
   </body>
+  
+  <script src="./js/jquery.js"></script>
+  <script src="./js/jquery.csv-0.71.js"></script>
+  <script src="server-data.js"></script> <!-- Put your server connection data in this file. -->
+  <script>
+
+    // Global Variables
+    var xmlDoc;
+
+    //var ServerURL = '.'; //Use this for local server
+    //var ServerURL = 'http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com'; //Live preview server
+    var ServerURL = 'http://'+serverData.webServer.url+":"+serverData.webServer.port;
+
+    // Wait until the DOM has loaded before querying the document
+    $(document).ready(function(){
+
+      //Create a custom event for when the XML file is finished loading.
+      var XMLevent = new CustomEvent('XMLLoaded', {
+      });
+
+      // RETRIEVE THE URL WHICH CONTAINS THE PASSED IN UNIQUEID
+      //Create a variable for the URL (not a string).
+      var locate = window.location 
+      //Dump the URL data into the hidden form, forcing it into a string of text.
+      document.hiddenform.hiddentext.value = locate 
+      //Read the URL out of the hidden text box.
+      var text = document.hiddenform.hiddentext.value 
+
+      //This function retrieves the UniqueID value from the URL string.
+      function delineate2(str){
+          point = str.lastIndexOf("=");
+          return(str.substring(point+1,str.length));
+      }
+
+      var UniqueID = delineate2(text);
+
+      // Retrieve the XML file for this marker.
+      // Call the XMLevent after the file finishes loading.
+      var xmlFile = new XMLHttpRequest();
+      var FileName = ServerURL+"/locations/" + UniqueID + ".xml";
+      xmlFile.open("GET", FileName, true);
+      xmlFile.onreadystatechange = function() {
+        if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
+          if (xmlFile.status === 200) {  // Makes sure it's found the file.
+
+            // Parse the XML from the raw text
+            var parser = new DOMParser();
+            xmlDoc = parser.parseFromString(xmlFile.responseText, "text/xml");
+
+            // Call the XMLEvent to signal that the XML is finished loading
+            document.dispatchEvent(XMLevent)
+
+          }
+        }
+      }
+      xmlFile.send(null); //Execute the file request.
+
+
+      // Create an event listener that executes after the XML file has finished loading.
+      document.addEventListener('XMLLoaded', function (e) {
+
+        // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
+        $('#status').text('XML successfully retrieved from server!');
+
+        //UniqueID
+        document.forms[1].uniqueid.value = UniqueID;
+
+        //Title
+        document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
+
+        //Latitude
+        document.forms[1].latitude.value = xmlDoc.getElementsByTagName("Latitude")[0].childNodes[0].nodeValue;
+
+        //Longitude
+        document.forms[1].longitude.value = xmlDoc.getElementsByTagName("Longitude")[0].childNodes[0].nodeValue;
+
+        //Summary
+        document.forms[1].summary.value = xmlDoc.getElementsByTagName("Summary")[0].childNodes[0].nodeValue;
+
+        //Description
+        document.forms[1].description.value = xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+
+      }, false);
+
+
+    });
+  </script>
 </html>
