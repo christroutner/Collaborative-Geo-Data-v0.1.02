@@ -369,6 +369,6 @@ return str;
 
 }
 
-exports.start = start;
-exports.upload = upload;
+//exports.start = start;
+//exports.upload = upload;
 exports.add_new = add_new;
