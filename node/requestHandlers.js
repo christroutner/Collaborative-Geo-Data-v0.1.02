@@ -24,6 +24,7 @@ var CustomEvent = new events(); //Custom event object
 //var wwwDir = '/var/www/'          //Linux
 var wwwDir = './'                   //KeystoneJS
 
+/*
 function start(response, postData) {
   console.log("Request handler 'start' was called.");
 
@@ -47,6 +48,7 @@ function upload(response, postData) {
 
   response.end();
 }
+*/
 
 /******************************************************************************
 Summary:

@@ -60,8 +60,8 @@ app.get('/', function(request, response, next) {
 });
 
 
-app.use('/start', requestHandlers.start);
-app.use('/upload', requestHandlers.upload);
+//app.use('/start', requestHandlers.start);
+//app.use('/upload', requestHandlers.upload);
 app.use('/add_new', requestHandlers.add_new);
 
 
