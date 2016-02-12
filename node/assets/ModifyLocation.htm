@@ -179,6 +179,9 @@ The program has following flow:
         debugger;
         if( data.slice(3,10) == "Success" ) {
           alert('Location information uploaded to server successfully.');
+          
+          $('form').hide();
+          $('#status').html('<p><a href="'+ServerURL+'/MultipleMaps.html">Click here to go back to the main map.</a></p>')
         } else {
           alert('Location information not uploaded to server!');
         }
