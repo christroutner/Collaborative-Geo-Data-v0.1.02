@@ -35,7 +35,7 @@ The program has following flow:
       The Node.js code that runs on the server is smart enough to know that submitting
       data on a UniqueID that already exists means that the location is getting updated.
     -->
-    <form action="http://ec2-54-201-251-131.us-west-2.compute.amazonaws.com:8888/add_new" method="post">
+    <form action="http://serverip:port/add_new" method="post">
       <p>UniqueID: <textarea name="uniqueid" rows="1" cols="80"></textarea></p><br>
       <p>Enter a title for the map marker: <br>
       <textarea name="title" rows="1" cols="80"></textarea></p>
@@ -67,6 +67,9 @@ The program has following flow:
     // Wait until the DOM has loaded before querying the document
     $(document).ready(function(){
 
+      //Update the Form so that it points to the correct server.
+      $('form').last().attr('action', ServerURL+'/add_new');
+      
       //Create a custom event for when the XML file is finished loading.
       var XMLevent = new CustomEvent('XMLLoaded', {
       });
