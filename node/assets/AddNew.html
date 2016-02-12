@@ -4,7 +4,7 @@
     <title>Add New Location</title>    
 </head>
 <body style="height:100%">
-  <p>A couple things to note:
+  <p id="status">A couple things to note:
     <ul>
       <li>The UniqueID field blank should exist but be left blank when creating a new location and submitting it to the Node webservice.</li>
       <li>You can make up any UserName you want. There is no logic behind this value at the moment.</li>
@@ -12,27 +12,7 @@
   </p>
   <br><br>
 
-  <!-- Conventional HTML form. Here for reference. -->
-  <!--
-  <form action="http://christroutner.com:8888/add_new" method="post">
-	  <p>Leave this UniqueID field blank: <br>
-	  <textarea name="uniqueid" rows="1" cols="80" disabled></textarea></p>
-      <p>Enter a Username for the map marker: <br>
-	  <textarea name="username" rows="1" cols="80"></textarea></p>
-      <p>Enter a title for the map marker: <br>
-	  <textarea name="title" rows="1" cols="80"></textarea></p>
-	  <p>Enter the latitude: <br>
-	  <textarea name="latitude" rows="1" cols="80"></textarea></p>
-	  <p>Enter the longitude: <br>
-	  <textarea name="longitude" rows="1" cols="80"></textarea></p>
-	  <p>Enter a <b>summary</b> of the location: <br>
-	  <textarea name="summary" rows="10" cols="80"></textarea></p>
-	  <p>Enter a detailed <b>description</b> of the location: <br>
-	  <textarea name="description" rows="20" cols="80"></textarea></p>
-	  <br></br>
-	  <input type="submit" value="Submit text" />
- </form>
- -->
+
 
   <!-- Using jQuery allows for dynamic configuration of server. -->
   <form>
@@ -60,6 +40,8 @@
   <script src="server-data.js"></script> <!-- Put your server connection data in this file. -->
   <script type="text/javascript">
 
+    var ServerURL = 'http://'+serverData.webServer.url+":"+serverData.webServer.port;
+    
     //This function send the form data to the server. It mimics the behavior of a conventional HTML form,
     //but allows the flexibility of a JavaScript program.
     var send_data = function() {
@@ -79,6 +61,9 @@
         debugger;
         if( data.slice(3,10) == "Success" ) {
           alert('Location information uploaded to server successfully.');
+          
+          $('form').hide();
+          $('#status').html('<a href="'+ServerURL+'/MultipleMaps.html">Click here to go back to the main map.</a>')
         } else {
           alert('Location information not uploaded to server!');
         }
