@@ -40,15 +40,15 @@ The program has following flow:
       <p>Enter a Username for the map marker: <br>
       <textarea name="username" id="username" rows="1" cols="80"></textarea></p>
       <p>Enter a title for the map marker: <br>
-      <textarea name="title" rows="1" cols="80"></textarea></p>
+      <textarea name="title" id="title" rows="1" cols="80"></textarea></p>
       <p>Enter the latitude: <br>
       <textarea name="latitude" rows="1" cols="80"></textarea></p>
       <p>Enter the longitude: <br>
-      <textarea name="longitude" rows="1" cols="80"></textarea></p>
+      <textarea name="longitude" id="longitude" rows="1" cols="80"></textarea></p>
       <p>Enter a <b>summary</b> of the location: <br>
-      <textarea name="summary" rows="10" cols="80"></textarea></p>
+      <textarea name="summary" id="summary" rows="10" cols="80"></textarea></p>
       <p>Enter a detailed <b>description</b> of the location: <br>
-      <textarea name="description" rows="20" cols="80"></textarea></p>
+      <textarea name="description" id="description" rows="20" cols="80"></textarea></p>
       <br></br>
       <input type="button" value="Submit Location" onclick="send_data()"/>
     </form>
@@ -122,7 +122,7 @@ The program has following flow:
 
         //UniqueID
         document.forms[1].uniqueid.value = UniqueID;
-
+        
         //Title
         document.forms[1].title.value = xmlDoc.getElementsByTagName("Title")[0].childNodes[0].nodeValue;
 
