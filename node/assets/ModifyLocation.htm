@@ -35,8 +35,10 @@ The program has following flow:
       The Node.js code that runs on the server is smart enough to know that submitting
       data on a UniqueID that already exists means that the location is getting updated.
     -->
-    <form action="http://serverip:port/add_new" method="post">
+    <form>
       <p>UniqueID: <textarea name="uniqueid" rows="1" cols="80"></textarea></p><br>
+      <p>Enter a Username for the map marker: <br>
+      <textarea name="username" id="username" rows="1" cols="80"></textarea></p>
       <p>Enter a title for the map marker: <br>
       <textarea name="title" rows="1" cols="80"></textarea></p>
       <p>Enter the latitude: <br>
@@ -48,7 +50,7 @@ The program has following flow:
       <p>Enter a detailed <b>description</b> of the location: <br>
       <textarea name="description" rows="20" cols="80"></textarea></p>
       <br></br>
-      <input type="submit" value="Submit text" />
+      <input type="button" value="Submit Location" onclick="send_data()"/>
     </form>
   </body>
   
@@ -66,7 +68,7 @@ The program has following flow:
 
     // Wait until the DOM has loaded before querying the document
     $(document).ready(function(){
-
+      debugger;
       //Update the Form so that it points to the correct server.
       $('form').last().attr('action', ServerURL+'/add_new');
       
@@ -140,5 +142,49 @@ The program has following flow:
 
 
     });
+    
+    //This function send the form data to the server. It mimics the behavior of a conventional HTML form,
+    //but allows the flexibility of a JavaScript program.
+    var send_data = function() {
+      debugger;
+
+      // RETRIEVE THE URL WHICH CONTAINS THE PASSED IN UNIQUEID
+      //Create a variable for the URL (not a string).
+      var locate = window.location 
+      //Dump the URL data into the hidden form, forcing it into a string of text.
+      document.hiddenform.hiddentext.value = locate 
+      //Read the URL out of the hidden text box.
+      var text = document.hiddenform.hiddentext.value 
+
+      //This function retrieves the UniqueID value from the URL string.
+      function delineate2(str){
+          point = str.lastIndexOf("=");
+          return(str.substring(point+1,str.length));
+      }
+
+      var UniqueID = delineate2(text);
+
+      var location_info = {        
+        'uniqueid': UniqueID,
+        'username': $('#username').val(),
+        'title': $('#title').val(),
+        'latitude': $('#latitude').val(),
+        'longitude': $('#longitude').val(),
+        'summary': $('#summary').val(),
+        'description': $('#description').val()
+      };
+
+      //Upload the new form to the server
+      $.get('http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new', location_info, function (data) { 
+        debugger;
+        if( data.slice(3,10) == "Success" ) {
+          alert('Location information uploaded to server successfully.');
+        } else {
+          alert('Location information not uploaded to server!');
+        }
+
+      });
+      
+    }
   </script>
 </html>
