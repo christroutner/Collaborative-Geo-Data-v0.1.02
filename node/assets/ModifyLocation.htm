@@ -70,7 +70,7 @@ The program has following flow:
     $(document).ready(function(){
       debugger;
       //Update the Form so that it points to the correct server.
-      $('form').last().attr('action', ServerURL+'/add_new');
+      //$('form').last().attr('action', ServerURL+'/add_new');
       
       //Create a custom event for when the XML file is finished loading.
       var XMLevent = new CustomEvent('XMLLoaded', {
@@ -116,7 +116,7 @@ The program has following flow:
 
       // Create an event listener that executes after the XML file has finished loading.
       document.addEventListener('XMLLoaded', function (e) {
-
+        debugger;
         // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
         $('#status').text('XML successfully retrieved from server!');
 
