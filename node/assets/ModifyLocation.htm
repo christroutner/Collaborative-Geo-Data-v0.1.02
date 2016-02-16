@@ -95,7 +95,7 @@ The program has following flow:
       // Retrieve the XML file for this marker.
       // Call the XMLevent after the file finishes loading.
       var xmlFile = new XMLHttpRequest();
-      var FileName = ServerURL+"/locations/" + UniqueID + ".xml";
+      var FileName = "./locations/" + UniqueID + ".xml";
       xmlFile.open("GET", FileName, true);
       xmlFile.onreadystatechange = function() {
         if (xmlFile.readyState === 4) {  // Makes sure the document is ready to parse.
