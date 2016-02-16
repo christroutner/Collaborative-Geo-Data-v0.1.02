@@ -58,7 +58,7 @@ npm install ya-csv
 
 -If the server-side files are on a different machine than the HTML pages, then you'll need to configure the server for this with the appropriate HTTP header.
 
--Server starts on port 8888 by default
+-Server starts on port 3000 by default
 
 
 
