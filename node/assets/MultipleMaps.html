@@ -118,10 +118,10 @@
       //Get the CSV file containing the marker data. Trigger the CSVLoaded
       //event once the file finishes loading.
       var txtFile = new XMLHttpRequest();
-      debugger;
+      //debugger;
       txtFile.open("GET", "./MarkerData.csv", true);
       txtFile.onreadystatechange = function() {
-        debugger;
+        //debugger;
         if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
           if (txtFile.status === 200) {  // Makes sure it's found the file.
 
