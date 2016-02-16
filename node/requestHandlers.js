@@ -91,6 +91,10 @@ function add_new(request, response, next) {
       "Summary: " + Location.summary + "<br>"+
       "Description: " + Location.description + "</p>";
       
+  //Allow CORS
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  
   response.send(successMsg);
   
   //Load the CSV file into memory.
