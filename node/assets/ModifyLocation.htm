@@ -68,7 +68,7 @@ The program has following flow:
 
     // Wait until the DOM has loaded before querying the document
     $(document).ready(function(){
-      debugger;
+      //debugger;
       //Update the Form so that it points to the correct server.
       //$('form').last().attr('action', ServerURL+'/add_new');
       
@@ -116,7 +116,7 @@ The program has following flow:
 
       // Create an event listener that executes after the XML file has finished loading.
       document.addEventListener('XMLLoaded', function (e) {
-        debugger;
+        //debugger;
         // FILL IN THE TEXT BOXES WITH THE INFORMATION FROM THE XML
         $('#status').text('XML successfully retrieved from server!');
 
@@ -146,7 +146,7 @@ The program has following flow:
     //This function send the form data to the server. It mimics the behavior of a conventional HTML form,
     //but allows the flexibility of a JavaScript program.
     var send_data = function() {
-      debugger;
+      //debugger;
 
       // RETRIEVE THE URL WHICH CONTAINS THE PASSED IN UNIQUEID
       //Create a variable for the URL (not a string).
@@ -176,7 +176,7 @@ The program has following flow:
 
       //Upload the new form to the server
       $.get('http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new', location_info, function (data) { 
-        debugger;
+        //debugger;
         if( data.slice(3,10) == "Success" ) {
           alert('Location information uploaded to server successfully.');
           

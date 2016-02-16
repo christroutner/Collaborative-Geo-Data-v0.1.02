@@ -68,7 +68,7 @@ incremented.
 function add_new(request, response, next) {
   console.log("Request handler 'add_new' was called.");
 
-  debugger;
+  //debugger;
   
   //Move data from the URL to the Location object.
   Location.uniqueid = request.query.uniqueid;

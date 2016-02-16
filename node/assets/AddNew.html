@@ -58,7 +58,7 @@
 
       //Upload the new form to the server
       $.get('http://'+serverData.dbServer.url+':'+serverData.dbServer.port+'/add_new', location_info, function (data) { 
-        debugger;
+        //debugger;
         if( data.slice(3,10) == "Success" ) {
           alert('Location information uploaded to server successfully.');
           
